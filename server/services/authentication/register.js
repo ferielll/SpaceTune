@@ -20,9 +20,7 @@ function registerUser(request, response) {
             message: 'User with that email already exist.',
           });
         } else {
-          new User({
-            email, password,
-          })
+          new User(request.body)
           .save()
           .then(doc => {
             if (doc) {

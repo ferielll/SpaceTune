@@ -1,4 +1,4 @@
 module.exports = { 
   'secret': 'thisissomethingsecrete',
-  'database': 'mongodb://127.0.0.1:27017/auth'
+  'database': 'mongodb+srv://spacetune:spacetune2022@cluster0.5rn16.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 };

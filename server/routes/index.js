@@ -14,7 +14,7 @@ function init(server) {
     res.redirect('/home');
   });
 
-  server.use('/api', apiRoute);
+  server.use('/spacetune', apiRoute);
   server.use('/home', homeRoute);
   // server.use('/error', errorRoute);
 }

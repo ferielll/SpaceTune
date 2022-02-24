@@ -1,10 +1,10 @@
 'use strict';
 
 const express = require('express');
-const v1ApiController = require('./v1');
+const ApiController = require('./apiRoutes');
 
 let router = express.Router();
 
-router.use('/v1', v1ApiController);
+router.use('/api', ApiController);
 
 module.exports = router;
