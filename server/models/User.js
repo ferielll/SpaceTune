@@ -1,61 +1,59 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
-
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
-  userName:{
-    type:String,
-    unique:true,
-    required:true
+  userName: {
+    type: String,
+    unique: true,
+    required: true,
   },
   email: {
     type: String,
     lowercase: true,
     unique: true,
-    required: true
+    required: true,
   },
-  avatar:{
-    type:String,
-    default:""
+  avatar: {
+    type: String,
+    default: "",
   },
-  phone:{
-    type:Number
+  phone: {
+    type: Number,
   },
-  birthday:{
-    type:Date
+  birthday: {
+    type: Date,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
-  instruments:[{
-    name:{type:String,
-    enum:["guitar","ukulele","piano","chello"]
+  instruments: [
+    {
+      name: { type: String, enum: ["guitar", "ukulele", "piano", "chello"] },
+      level: Number,
     },
-    level:Number
-  }],
+  ],
   role: {
     type: String,
-    enum: ['SUPERADMIN', 'SIMPLEUSER','PROFESSOR'],
-    default: 'SIMPLEUSER'
+    enum: ["SUPERADMIN", "SIMPLEUSER", "PROFESSOR"],
+    default: "SIMPLEUSER",
   },
-  tag:{
-     name:{
-       type:String,
-       enum: ['bronze', 'silver','gold','diamond','superstar']
-     },
-     points:{
-       type:Number,
-       default:0
-     }
-  }
+  tag: {
+    name: {
+      type: String,
+      enum: ["bronze", "silver", "gold", "diamond", "superstar"],
+    },
+    points: {
+      type: Number,
+      default: 0,
+    },
+  },
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre("save", function (next) {
   let user = this;
 
-  if (this.isModified('password') || this.isNew) {
+  if (this.isModified("password") || this.isNew) {
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
         console.log(err);
@@ -67,7 +65,6 @@ UserSchema.pre('save', function(next) {
           console.log(err);
           return next(err);
         }
-
         user.password = hash;
         next();
       });
@@ -78,8 +75,8 @@ UserSchema.pre('save', function(next) {
 });
 
 // Create method to compare password input to password saved in database
-UserSchema.methods.comparePassword = function(pw, cb) {
-  bcrypt.compare(pw, this.password, function(err, isMatch) {
+UserSchema.methods.comparePassword = function (pw, cb) {
+  bcrypt.compare(pw, this.password, function (err, isMatch) {
     if (err) {
       return cb(err);
     }
@@ -88,4 +85,4 @@ UserSchema.methods.comparePassword = function(pw, cb) {
   });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

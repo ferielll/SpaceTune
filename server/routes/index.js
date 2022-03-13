@@ -15,7 +15,6 @@ function init(server) {
   });
 
   server.use('/spacetune', apiRoute);
-  server.use('/home', homeRoute);
   // server.use('/error', errorRoute);
 }
 
