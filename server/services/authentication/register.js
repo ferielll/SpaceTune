@@ -7,7 +7,7 @@ exports.registerUser=async(request, response)=> {
   let { email, password } = request.body;
 
   if (!email || !password) {
-    response.json({
+    response.json({ 
       success: false,
       message: 'Please enter email and password.'
     });

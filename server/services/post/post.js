@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 
 const Post = require('../../models/Post');
@@ -15,11 +15,11 @@ exports.createPost=async(request, response)=>{
         Image: request.file.path
     })
     .save()
-    .then(doc => {
+    .then((doc) => {
       if (doc) {
         response.json({
           success: true,
-          content:doc
+          content: doc,
         });
       } else {
         response.json({
@@ -27,10 +27,10 @@ exports.createPost=async(request, response)=>{
         });
       }
     })
-    .catch(error => {
+    .catch((error) => {
       response.json(error);
     });
-}
+};
 
 exports.updatePost =async (request,response)=>{
     // try{

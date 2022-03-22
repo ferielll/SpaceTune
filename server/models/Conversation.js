@@ -8,8 +8,6 @@ const ConversationSchema = new mongoose.Schema({
         type: String,
         enum:["Channel","Private"]
     },
-   
-    
 },
 {timestamps:true},{versionKey:false})
 module.exports = mongoose.model('Conversation', ConversationSchema);
