@@ -8,6 +8,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser'); 
 const cors = require('cors');
 
+
 module.exports = function() {
   let server = express(),
     create,
@@ -29,6 +30,7 @@ module.exports = function() {
     server.use(cookieParser());
     server.use(logger('dev'));
     server.use(passport.initialize());
+
     mongoose.connect(db.database, {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -44,6 +46,7 @@ module.exports = function() {
     routes.init(server);
   };
 
+ 
   start = function() {
     let hostname = server.get('hostname'),
       port = server.get('port');
