@@ -7,6 +7,7 @@ const postController = require("../../controllers/apis/post");
 const formationController = require("../../controllers/apis/formation")
 const express = require("express");
 
+
 let router = express.Router();
 
 router.use("/register", registerController);

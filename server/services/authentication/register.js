@@ -3,7 +3,7 @@
 const User = require('../../models/User');
 
 // Register new users
-function registerUser(request, response) {
+exports.registerUser=async(request, response)=> {
   let { email, password } = request.body;
 
   if (!email || !password) {
@@ -46,6 +46,6 @@ function registerUser(request, response) {
   }
 }
 
-module.exports = {
-  registerUser: registerUser,
-};
+// module.exports = {
+//   registerUser: registerUser,
+// };
