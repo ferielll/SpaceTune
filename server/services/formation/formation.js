@@ -36,8 +36,8 @@ exports.createFormation = async (request, response) => {
 exports.getAllFormations = async (request, response) => {
   try {
     let formations = await Formation.find()
-      .populate("teacher")
-      .populate("-password");
+      .select(" -users")
+      .populate("teacher");
     response.send(formations);
   } catch (error) {
     response.json({ success: false, message: error });
@@ -58,11 +58,42 @@ exports.getFormationsByFormationId = async (request, response) => {
   try {
     let formation = await Formation.findOne({
       _id: request.params.formationId,
-    }).populate("teacher");
-    console.log(formation, "formation");
-
+    }).populate("users teacher");
     response.send(formation);
   } catch (error) {
     response.json({ success: false, message: error });
   }
+};
+
+exports.subscribeUsers = async (req, res) => {
+  try {
+    Formation.findOneAndUpdate(
+      {
+        _id: req.params.formationId,
+      },
+      {
+        $set: {
+          users: req.body._id,
+        },
+      }
+    );
+    res.send({ success: true });
+  } catch (error) {
+    res.json({ success: false });
+  }
+  // Formation.update(
+  //   {
+  //     _id: req.params.formationId,
+  //   },
+  //   {
+  //     $set: {
+  //       users: req.body._id,
+  //     },
+  //   },
+  //   function (err, formation) {
+  //     if (err) throw err;
+  //     console.log("err");
+  //     console.log("update formation complete");
+  //   }
+  // );
 };

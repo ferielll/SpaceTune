@@ -12,5 +12,6 @@ router.get(
   "/findOne/:formationId",
   FormationService.getFormationsByFormationId
 );
+router.put("/subscribe/:formationId", FormationService.subscribeUsers);
 
 module.exports = router;

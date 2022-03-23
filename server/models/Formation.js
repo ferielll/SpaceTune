@@ -14,6 +14,9 @@ const FormationSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    type: {
+      type: String,
+    },
     onlineLessons: [
       {
         date: Date,
@@ -21,6 +24,7 @@ const FormationSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
+  { versionKey: false }
 );
 module.exports = mongoose.model("Formation", FormationSchema);

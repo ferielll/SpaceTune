@@ -21,8 +21,8 @@ function loginUser(request, response) {
       }
       // Check if password matches
       user.comparePassword(password, function (error, isMatch) {
-        if (isMatch && !error) {
-          var token = jwt.sign(user.toJSON(), db.secret, {
+        if (!isMatch && error) {
+          let token = jwt.sign(user.toJSON(), db.secret, {
             expiresIn: 10080,
           });
           return response.json({
