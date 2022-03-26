@@ -5,10 +5,7 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    type: {
-        type: String,
-        enum:["guitar","ukulele","piano","chello", "accesories"]
-    },
+    type: String,
     photos: String,
     isUsed: Boolean,
     description: String,
@@ -16,7 +13,10 @@ const ItemSchema = new mongoose.Schema({
         type: Number,
         required:true,
     },
-    inStock: Boolean,
+    inStock: {
+        type: Boolean,
+        default:true,
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 module.exports = mongoose.model('Item', ItemSchema);
