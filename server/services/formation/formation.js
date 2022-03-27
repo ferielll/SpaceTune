@@ -1,53 +1,52 @@
 "use strict";
 
 const Formation = require("../../models/Formation");
-exports.createFormation = async (request, response) => {
-  new Formation(request.body)
+exports.createFormation = async (req, res) => {
+  new Formation(req.body)
     .save()
     .then((doc) => {
       if (doc) {
-        response.json({
+        res.json({
           success: true,
           content: doc,
         });
       } else {
-        response.json({
+        res.json({
           success: false,
         });
       }
     })
     .catch((error) => {
-      response.json(error);
+      res.json(error);
     });
 };
 
-// exports.updateFormation = async (request, response) => {
-//   try {
-//     await Formation.findOneAndUpdate(
-//       { _id: request.params.formationtId },
-//       request.body
-//     );
-//     response.send({ success: true });
-//   } catch (error) {
-//     response.json({ success: false, message: error });
-//   }
-// };
-
-exports.getAllFormations = async (request, response) => {
+exports.updateFormation = async (request, response) => {
   try {
-    let formations = await Formation.find()
-      .select(" -users")
-      .populate("teacher");
-    response.send(formations);
+    await Formation.findByIdAndUpdate(
+      { _id: request.params.formationtId },
+      request.body
+    );
+    response.send({ success: true });
   } catch (error) {
     response.json({ success: false, message: error });
   }
 };
 
+exports.getAllFormations = async (req, res) => {
+  try {
+    let filter = req.query.filters ? req.query.filters : {};
+    let formations = await Formation.find().populate("teacher users");
+    res.json(formations);
+  } catch (error) {
+    res.json({ success: false, message: error });
+  }
+};
+
 exports.deleteFormation = async (req, res) => {
   try {
-    await Formation.findOneAndDelete({ _id: req.params.formationtId });
-    console.log("formation", req.params.formationId);
+    console.log("fo", req.params.formationId);
+    await Formation.deleteOne({ _id: req.params.formationId });
     res.send({ success: true, message: "Formation deleted succesfully" });
   } catch (error) {
     res.json({ success: false, message: error });
@@ -58,7 +57,18 @@ exports.getFormationsByFormationId = async (request, response) => {
   try {
     let formation = await Formation.findOne({
       _id: request.params.formationId,
-    }).populate("users teacher");
+    }).populate("teacher users");
+    response.send(formation);
+  } catch (error) {
+    response.json({ success: false, message: error });
+  }
+};
+
+exports.getMyLessons = async (request, response) => {
+  try {
+    let formation = await Formation.find({
+      teacher: request.params.teacherId,
+    }).populate("teacher users");
     response.send(formation);
   } catch (error) {
     response.json({ success: false, message: error });
@@ -67,33 +77,18 @@ exports.getFormationsByFormationId = async (request, response) => {
 
 exports.subscribeUsers = async (req, res) => {
   try {
-    Formation.findOneAndUpdate(
+    await Formation.findByIdAndUpdate(
       {
         _id: req.params.formationId,
       },
       {
-        $set: {
-          users: req.body._id,
+        $push: {
+          users: req.body,
         },
       }
     );
     res.send({ success: true });
   } catch (error) {
-    res.json({ success: false });
+    res.status(404).json({ success: false, message: error.message });
   }
-  // Formation.update(
-  //   {
-  //     _id: req.params.formationId,
-  //   },
-  //   {
-  //     $set: {
-  //       users: req.body._id,
-  //     },
-  //   },
-  //   function (err, formation) {
-  //     if (err) throw err;
-  //     console.log("err");
-  //     console.log("update formation complete");
-  //   }
-  // );
 };
