@@ -52,14 +52,12 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre("save", function (next) {
   let user = this;
-
   if (this.isModified("password") || this.isNew) {
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
         console.log(err);
         return next(err);
       }
-
       bcrypt.hash(user.password, salt, (err, hash) => {
         if (err) {
           console.log(err);
@@ -80,7 +78,6 @@ UserSchema.methods.comparePassword = function (pw, cb) {
     if (err) {
       return cb(err);
     }
-
     cb(null, isMatch);
   });
 };
