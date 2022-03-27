@@ -17,6 +17,7 @@ const ItemSchema = new mongoose.Schema({
         type: Boolean,
         default:true,
     },
+    qte : Number,
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 module.exports = mongoose.model('Item', ItemSchema);
