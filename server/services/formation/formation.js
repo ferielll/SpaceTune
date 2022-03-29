@@ -36,7 +36,7 @@ exports.updateFormation = async (request, response) => {
 exports.getAllFormations = async (req, res) => {
   try {
     let filter = req.query.filters ? req.query.filters : {};
-    let formations = await Formation.find().populate("teacher users");
+    let formations = await Formation.find().populate("teacher");
     res.json(formations);
   } catch (error) {
     res.json({ success: false, message: error });
@@ -57,7 +57,7 @@ exports.getFormationsByFormationId = async (request, response) => {
   try {
     let formation = await Formation.findOne({
       _id: request.params.formationId,
-    }).populate("teacher users");
+    }).populate("teacher");
     response.send(formation);
   } catch (error) {
     response.json({ success: false, message: error });
@@ -68,6 +68,17 @@ exports.getMyLessons = async (request, response) => {
   try {
     let formation = await Formation.find({
       teacher: request.params.teacherId,
+    }).populate("teacher");
+    response.send(formation);
+  } catch (error) {
+    response.json({ success: false, message: error });
+  }
+};
+
+exports.getMyLessonByFormationId = async (request, response) => {
+  try {
+    let formation = await Formation.findOne({
+      _id: request.params.trainingId,
     }).populate("teacher users");
     response.send(formation);
   } catch (error) {
