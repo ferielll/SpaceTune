@@ -5,7 +5,7 @@ const Item = require('../../models/Item');
 const mongoose = require("mongoose");
 
 exports.createItem=async(request, response)=>{
-  console.log("yeyy",request.body);
+ 
     new Item({
         _id: new mongoose.Types.ObjectId(),
         name: request.body.item.name,
