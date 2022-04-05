@@ -70,7 +70,10 @@ exports.createEarTraining=async(request, response)=>{
     });
 }
 exports.addEarTrainingToUser=async(request, response)=>{
-  User.findByIdAndUpdate(request.params.userId,{$push:{earTraining:request.params.earTrainingId}})
+  let update={
+    "exercice":request.params.earTrainingId
+  }
+  User.findByIdAndUpdate(request.params.userId,{$push:{earTraining:update}},{new:true})
     .then((doc) => {
       if (doc) {
         response.json({
@@ -88,6 +91,9 @@ exports.addEarTrainingToUser=async(request, response)=>{
     });
 }
 exports.updateEarTrainingScoreForUser=async(request, response)=>{
+  console.log(request.body.score)
+  console.log(request.body.exerciceId)
+
   User.findByIdAndUpdate(request.params.userId,{
     $set:{"earTraining.$[elem].score":request.body.score},
   },{arrayFilters:[{"elem.exercice":request.body.exerciceId}]})
@@ -107,12 +113,7 @@ exports.updateEarTrainingScoreForUser=async(request, response)=>{
       response.json(error);
     });
 }
-exports.createTab=async(name,photo)=>{
-return await tabGenerator.create({name:name,photo:photo}).save()
-}
-exports.getTab=async(name)=>{
-return await tabGenerator.find({name:name})
-}
+
 exports.scrapeTabs=async(request, response)=>{
 //trim the name and make it lowercase
 let name=request.body.name.trim().toLowerCase()

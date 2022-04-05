@@ -11,7 +11,7 @@ const Item = mongoose.Schema({
 var OrderSchema = mongoose.Schema(
   {
     userID: { type: mongoose.ObjectId, ref: "User" },
-    orderBooks: { type: [Item] },
+    orderItems: { type: [Item] },
     totalMoney: { type: Number },
   },
   { timestamps: true }
