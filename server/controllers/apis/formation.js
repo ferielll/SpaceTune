@@ -19,5 +19,6 @@ router.get(
   FormationService.getFormationsByFormationId
 );
 router.put("/subscribe/:formationId", FormationService.subscribeUsers);
+router.put("/addOnlineLesson/:formationId", FormationService.addOnlineLessons);
 
 module.exports = router;
