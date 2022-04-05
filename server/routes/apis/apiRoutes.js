@@ -6,6 +6,8 @@ const dashboardController = require("../../controllers/apis/dashboard");
 const postController = require("../../controllers/apis/post");
 const formationController = require("../../controllers/apis/formation")
 const shopController = require("../../controllers/apis/shop")
+const toolsController = require("../../controllers/apis/tools")
+
 const express = require("express");
 
 
@@ -17,5 +19,6 @@ router.use("/dashboard", dashboardController);
 router.use("/post", postController);
 router.use("/formation", formationController);
 router.use("/shop", shopController);
+router.use("/tools", toolsController);
 
 module.exports = router;
