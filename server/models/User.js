@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
     enum: ["SUPERADMIN", "SIMPLEUSER", "PROFESSOR"],
     default: "SIMPLEUSER",
   },
+  earTraining:[{
+    exercice: {type:mongoose.Schema.Types.ObjectId, ref:'EarTraining'},
+    score:{type:Number, default:0}
+  }],
   tag: {
     name: {
       type: String,

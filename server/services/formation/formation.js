@@ -34,13 +34,44 @@ exports.updateFormation = async (request, response) => {
 };
 
 exports.getAllFormations = async (req, res) => {
-  try {
-    let filter = req.query.filters ? req.query.filters : {};
-    let formations = await Formation.find().populate("teacher");
-    res.json(formations);
-  } catch (error) {
-    res.json({ success: false, message: error });
-  }
+  const pagination = JSON.parse(
+    req.query.pagination ? req.query.pagination : "{}"
+  );
+  const { page = 1, limit = 8 } = pagination;
+  const sort = JSON.parse(req.query.sort ? req.query.sort : 1);
+  let totalDocs = await Formation.countDocuments();
+  Formation.find()
+    .sort({ name: sort })
+    .skip(limit * (page - 1))
+    .limit(limit)
+    .select()
+    .populate("teacher")
+    .then((formations) => {
+      let totalPagesFloat = totalDocs / limit;
+      let totalPagesInt = parseInt(totalDocs / limit);
+      if (totalPagesFloat > totalPagesInt) totalPagesInt++;
+      let nextPage = totalPagesInt > page ? page + 1 : null;
+      let hasNextPage = !!nextPage;
+      let prevPage = page === 1 ? null : page - 1;
+      let hasPrevPage = !!prevPage;
+      let result = {
+        docs: formations,
+        totalDocs: totalDocs,
+        limit,
+        page,
+        totalPages: totalPagesInt,
+        hasNextPage,
+        nextPage,
+        hasPrevPage,
+        prevPage,
+      };
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving notes.",
+      });
+    });
 };
 
 exports.deleteFormation = async (req, res) => {
