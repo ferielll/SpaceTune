@@ -32,10 +32,16 @@ const storage = multer.diskStorage({
 
 let router = express.Router();
 
+router.get('/sortDesc', PostService.sortDesc);
+router.get('/sortAsc', PostService.sortAsc);
 router.post('/create', upload.single('Image'),PostService.createPost);
 router.put('/update/:postId', PostService.updatePost);
 router.get('/getAll', PostService.getAllPosts);
 router.delete('/delete/:postId', PostService.deletePost);
 router.get('/findOne/:userId', PostService.getPostsByUserId);
+router.get('/:postId',PostService.getPostById);
+router.post('/search', PostService.search);
+router.post('/pagination', PostService.pagination);
+
 
 module.exports = router;
