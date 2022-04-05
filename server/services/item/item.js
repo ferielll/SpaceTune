@@ -5,16 +5,16 @@ const Item = require('../../models/Item');
 const mongoose = require("mongoose");
 
 exports.createItem=async(request, response)=>{
-  console.log("yeyy",request.body);
+ 
     new Item({
         _id: new mongoose.Types.ObjectId(),
-        name: request.body.item.name,
-        type: request.body.item.type,
-        isUsed: request.body.item.isUsed,
-        user: request.body.item.user,
-        description: request.body.item.description,
-        price: request.body.item.price,
-       
+        name: request.body.name,
+        type: request.body.type,
+        isUsed: request.body.isUsed,
+        user: request.body.user,
+        description: request.body.description,
+        price: request.body.price,
+        photos : request.file.path,
     })
     .save()
     .then((doc) => {

@@ -34,13 +34,44 @@ exports.updateFormation = async (request, response) => {
 };
 
 exports.getAllFormations = async (req, res) => {
-  try {
-    let filter = req.query.filters ? req.query.filters : {};
-    let formations = await Formation.find().populate("teacher users");
-    res.json(formations);
-  } catch (error) {
-    res.json({ success: false, message: error });
-  }
+  const pagination = JSON.parse(
+    req.query.pagination ? req.query.pagination : "{}"
+  );
+  const { page = 1, limit = 8 } = pagination;
+  const sort = JSON.parse(req.query.sort ? req.query.sort : 1);
+  let totalDocs = await Formation.countDocuments();
+  Formation.find()
+    .sort({ name: sort })
+    .skip(limit * (page - 1))
+    .limit(limit)
+    .select()
+    .populate("teacher")
+    .then((formations) => {
+      let totalPagesFloat = totalDocs / limit;
+      let totalPagesInt = parseInt(totalDocs / limit);
+      if (totalPagesFloat > totalPagesInt) totalPagesInt++;
+      let nextPage = totalPagesInt > page ? page + 1 : null;
+      let hasNextPage = !!nextPage;
+      let prevPage = page === 1 ? null : page - 1;
+      let hasPrevPage = !!prevPage;
+      let result = {
+        docs: formations,
+        totalDocs: totalDocs,
+        limit,
+        page,
+        totalPages: totalPagesInt,
+        hasNextPage,
+        nextPage,
+        hasPrevPage,
+        prevPage,
+      };
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving notes.",
+      });
+    });
 };
 
 exports.deleteFormation = async (req, res) => {
@@ -57,7 +88,7 @@ exports.getFormationsByFormationId = async (request, response) => {
   try {
     let formation = await Formation.findOne({
       _id: request.params.formationId,
-    }).populate("teacher users");
+    }).populate("teacher");
     response.send(formation);
   } catch (error) {
     response.json({ success: false, message: error });
@@ -68,6 +99,17 @@ exports.getMyLessons = async (request, response) => {
   try {
     let formation = await Formation.find({
       teacher: request.params.teacherId,
+    }).populate("teacher");
+    response.send(formation);
+  } catch (error) {
+    response.json({ success: false, message: error });
+  }
+};
+
+exports.getMyLessonByFormationId = async (request, response) => {
+  try {
+    let formation = await Formation.findOne({
+      _id: request.params.trainingId,
     }).populate("teacher users");
     response.send(formation);
   } catch (error) {
@@ -85,6 +127,22 @@ exports.subscribeUsers = async (req, res) => {
         $push: {
           users: req.body,
         },
+      }
+    );
+    res.send({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};
+
+exports.addOnlineLessons = async (req, res) => {
+  try {
+    await Formation.findByIdAndUpdate(
+      {
+        _id: req.params.formationId,
+      },
+      {
+        $push: { onlineLessons: req.body },
       }
     );
     res.send({ success: true });
