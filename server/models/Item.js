@@ -7,17 +7,19 @@ const ItemSchema = new mongoose.Schema({
     },
     type: String,
     photos: String,
-    isUsed: Boolean,
+    isUsed:{
+        type: Boolean,
+        default:false},
     description: String,
     price: {
         type: Number,
-        required:true,
+        default: 0,
     },
     inStock: {
         type: Boolean,
         default:true,
     },
-    qte : Number,
+    
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 module.exports = mongoose.model('Item', ItemSchema);
