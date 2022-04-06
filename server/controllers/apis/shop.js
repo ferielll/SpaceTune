@@ -40,5 +40,6 @@ router.get('/getUsedItems', ItemService.getUsedItems);
 router.get('/getNewItems', ItemService.getNewItems);
 router.delete('/delete/:itemId', ItemService.deleteItem);
 router.get('/findOne/:userId', ItemService.getItemsByUserId);
+router.get('/scrape', ItemService.scrapeItems);
 
 module.exports = router;

@@ -3,7 +3,8 @@
 
 const Item = require('../../models/Item');
 const mongoose = require("mongoose");
-
+const axios = require("axios");
+const cheerio = require("cheerio");
 exports.createItem=async(request, response)=>{
  
     new Item({
@@ -130,3 +131,33 @@ exports.getItemsByUserId= async (request,response)=>{
 
     }
 }
+
+
+exports.scrapeItems=async(request, res)=>{
+  
+    try {
+        const response = await axios.get('https://www.gear4music.com/search/?str_search_phrase='+request.body.name);
+ 
+        const html = response.data;
+ 
+        const $ = cheerio.load(html);
+ 
+        const items = [];
+ 
+  $('#main > div > section > ul > li').each((_idx, el) => {
+            const item = $(el)
+            const title = item.find(' a > div > div > h3').text()
+            const price = item.find(' div > span > span.c-val').text()
+            const url = item.find(' a').attr('href')
+            const image = item.find(' a > span > img').attr('src')
+            items.push({title:title,price:price,url:url,image:image})
+        });
+          
+         res.send(items);
+    } catch (error) {
+        throw error;
+    }
+    
+ };
+ 
+ 
