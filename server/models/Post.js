@@ -31,7 +31,7 @@ const PostSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required: true,
+       // required: true,
       },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     dislikes : [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],

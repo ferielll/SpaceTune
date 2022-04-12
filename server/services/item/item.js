@@ -15,7 +15,7 @@ exports.createItem=async(request, response)=>{
         user: request.body.user,
         description: request.body.description,
         price: request.body.price,
-        photos : request.file.path,
+        //photos : request.file.path,
     })
     .save()
     .then((doc) => {

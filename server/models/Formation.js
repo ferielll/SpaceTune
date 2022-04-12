@@ -21,6 +21,7 @@ const FormationSchema = new mongoose.Schema(
       {
         date: Date,
         description: String,
+        name: String,
       },
     ],
   },
