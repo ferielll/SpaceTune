@@ -134,3 +134,19 @@ exports.subscribeUsers = async (req, res) => {
     res.status(404).json({ success: false, message: error.message });
   }
 };
+
+exports.addOnlineLessons = async (req, res) => {
+  try {
+    await Formation.findByIdAndUpdate(
+      {
+        _id: req.params.formationId,
+      },
+      {
+        $push: { onlineLessons: req.body },
+      }
+    );
+    res.send({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};
