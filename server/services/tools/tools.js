@@ -134,7 +134,7 @@ let name=request.body.name.trim().toLowerCase()
   const INPUT_SELECTOR="body > div > header > div > div.gtd-header__right > form"
   if (request.body !== undefined) {
     (() => {
-      puppeteer.launch({ headless: true })
+      puppeteer.launch({ headless: false })
       .then(async (browser) => {
 
         let page = await browser.newPage()
