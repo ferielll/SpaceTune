@@ -132,6 +132,16 @@ exports.getItemsByUserId= async (request,response)=>{
     }
 }
 
+exports.getItemById= async (request,response)=>{
+  try{
+      let item=await Item.findById(request.params.Id)
+      response.send(item)
+  }catch(error){
+      response.json({success:false,message:error});
+
+  }
+}
+
 
 exports.scrapeItems=async(request, res)=>{
   

@@ -15,7 +15,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, './uploadsShop/');
+      cb(null, './server/public/shop');
     },
     filename: function(req, file, cb) {
         cb(null, Date.now() + file.originalname);
@@ -39,7 +39,7 @@ router.get('/getAll', ItemService.getAllItems);
 router.get('/getUsedItems', ItemService.getUsedItems);
 router.get('/getNewItems', ItemService.getNewItems);
 router.delete('/delete/:itemId', ItemService.deleteItem);
-router.get('/findOne/:userId', ItemService.getItemsByUserId);
+router.get('/findByUser/:userId', ItemService.getItemsByUserId);
 router.get('/scrape', ItemService.scrapeItems);
-
+router.get('/findOneById/:Id', ItemService.getItemById);
 module.exports = router;

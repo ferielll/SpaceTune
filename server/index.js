@@ -44,7 +44,6 @@ setImmediate(()=>setTimeout(()=>console.log("a"),0));
     require("../configs/passport")(passport);
 
     server.use("/uploads", express.static("uploads"));
-
     server.set("views", server.get("viewDir"));
 
     // Set up routes
