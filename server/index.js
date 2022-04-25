@@ -11,7 +11,6 @@ const cors = require("cors");
 
 
 module.exports = function() {
-setImmediate(()=>setTimeout(()=>console.log("a"),0)); 
 
 
 
