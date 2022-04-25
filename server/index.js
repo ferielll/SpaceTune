@@ -43,7 +43,6 @@ module.exports = function() {
     require("../configs/passport")(passport);
 
     server.use("/uploads", express.static("uploads"));
-
     server.set("views", server.get("viewDir"));
 
     // Set up routes
