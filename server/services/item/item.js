@@ -157,7 +157,7 @@ exports.scrapeItems=async(request, res)=>{
   $('#main > div > section > ul > li').each((_idx, el) => {
             const item = $(el)
             const title = item.find(' a > div > div > h3').text()
-            const price = item.find(' div > span > span.c-val').text()
+            const price = item.find(' div > span > span.c-val').attr('content')
             const url = item.find(' a').attr('href')
             const image = item.find(' a > span > img').attr('data-src')
             items.push({title:title,price:price,url:url,image:image})
