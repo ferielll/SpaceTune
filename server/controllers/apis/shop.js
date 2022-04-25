@@ -15,7 +15,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, './server/public/shop');
+      cb(null, './uploads/shop/');
     },
     filename: function(req, file, cb) {
         cb(null, Date.now() + file.originalname);

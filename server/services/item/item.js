@@ -15,7 +15,7 @@ exports.createItem=async(request, response)=>{
         user: request.body.user,
         description: request.body.description,
         price: request.body.price,
-        photos : request.file.path,
+        //photos : request.file.path,
     })
     .save()
     .then((doc) => {
@@ -159,7 +159,7 @@ exports.scrapeItems=async(request, res)=>{
             const title = item.find(' a > div > div > h3').text()
             const price = item.find(' div > span > span.c-val').text()
             const url = item.find(' a').attr('href')
-            const image = item.find(' a > span > img').attr('src')
+            const image = item.find(' a > span > img').attr('data-src')
             items.push({title:title,price:price,url:url,image:image})
         });
           
