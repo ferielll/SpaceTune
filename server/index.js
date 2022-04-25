@@ -19,8 +19,10 @@ const io = require("socket.io")(server, {
   },
 });
 
-module.exports = function () {
-  setImmediate(() => setTimeout(() => console.log("a"), 0));
+
+module.exports = function() {
+
+
 
   let server = express(),
     create,
@@ -54,7 +56,6 @@ module.exports = function () {
     require("../configs/passport")(passport);
 
     server.use("/uploads", express.static("uploads"));
-
     server.set("views", server.get("viewDir"));
 
     // Set up routes

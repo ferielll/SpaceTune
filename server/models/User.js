@@ -51,6 +51,8 @@ const UserSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
+    likedSongs: { type: [String], default: [] },
+	  playlists: { type: [String], default: [] },
   },
 });
 
