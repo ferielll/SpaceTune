@@ -35,37 +35,17 @@ exports.createItem=async(request, response)=>{
     });
 };
 
-exports.updateItem =async (request,response)=>{
-    // try{
-    //     await Item.findOneAndUpdate({_id:request.params.itemId},request.body)
-    //     response.send({success:true})
-
-    // }catch(error){
-    //     response.json({success:false,message:error});
-
-    // }
-
-    try {
-        
-       
-          try {
-            const updatedItem = await Item.findByIdAndUpdate(
-                request.params.itemId,
-              {
-                $set: request.body,
-              },
-              { new: true }
-            );
-            console.log(updatedItem);
-            response.status(200).json(updatedItem);
-          } catch (err) {
-            response.status(500).json(err);
-          }
-         
-      } catch (err) {
-        response.status(500).json(err);
-      }
-}
+exports.updateItem = async (request, response) => {
+  try {
+    await Item.findByIdAndUpdate(
+      { _id: request.params.itemId },
+      request.body
+    );
+    response.send({ success: true });
+  } catch (error) {
+    response.json({ success: false, message: error });
+  }
+};
 
 exports.getAllItems =async (request,response)=>{
     try
