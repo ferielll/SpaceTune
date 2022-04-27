@@ -6,9 +6,10 @@ const FormationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: String,
     teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    image: { type: String, required: true },
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quiz" }],
     description: String,
     price: {
       type: Number,

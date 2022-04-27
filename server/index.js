@@ -7,7 +7,17 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 
+const app = require("express")();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 
 module.exports = function() {
@@ -30,7 +40,10 @@ module.exports = function() {
     // Returns middleware that parses json
     server.use(cors());
     server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use(bodyParser.urlencoded({
+      limit: "10mb",
+      extended: true,
+    }));
     server.use(cookieParser());
     server.use(logger("dev"));
     server.use(passport.initialize());
@@ -49,10 +62,26 @@ module.exports = function() {
     routes.init(server);
   };
 
- 
-  start = function() {
-    let hostname = server.get('hostname'),
-      port = server.get('port');
+  //socket video call
+  io.on("connection", (socket) => {
+    socket.emit("me", socket.id);
+
+    socket.on("disconnect", () => {
+      socket.broadcast.emit("callEnded");
+    });
+
+    socket.on("callUser", ({ userToCall, signalData, from, name }) => {
+      io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+    });
+
+    socket.on("answerCall", (data) => {
+      io.to(data.to).emit("callAccepted", data.signal);
+    });
+  });
+
+  start = function () {
+    let hostname = server.get("hostname"),
+      port = server.get("port");
 
     server.listen(port, function () {
       console.log(
