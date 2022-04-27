@@ -6,6 +6,7 @@ const TabGenerator = require('../../models/TabGenerator');
 
 const EarTraining = require('../../models/EarTraining');
 const User=require("../../models/User");
+const EarTrainingHistory=require("../../models/EarTrainingHistory");
 const mongoose = require("mongoose");
 const puppeteer = require('puppeteer')
 const cheerio = require('cheerio')
@@ -32,6 +33,42 @@ exports.createBeat=async(request, response)=>{
 };
 exports.getBeatByUser=async(request, response)=>{
   BeatMaker.find({user:request.params.userId})
+    .then((doc) => {
+      if (doc) {
+        response.json({
+          success: true,
+          content: doc,
+        });
+      } else {
+        response.json({
+          success: false,
+        });
+      }
+    })
+    .catch((error) => {
+      response.json(error);
+    });
+}
+exports.deleteEarTraining=async(request, response)=>{
+  EarTraining.findByIdAndDelete(request.params.id)
+    .then((doc) => {
+      if (doc) {
+        response.json({
+          success: true,
+          content: doc,
+        });
+      } else {
+        response.json({
+          success: false,
+        });
+      }
+    })
+    .catch((error) => {
+      response.json(error);
+    });
+}
+exports.getEarTrainings=async (request, response)=>{
+  EarTraining.find({})
     .then((doc) => {
       if (doc) {
         response.json({
@@ -113,6 +150,64 @@ exports.updateEarTrainingScoreForUser=async(request, response)=>{
       response.json(error);
     });
 }
+exports.deleteEarTrainingHistory=async(request, response)=>{
+  EarTrainingHistory.findByIdAndDelete(request.params.id)
+    .then((doc) => {
+      if (doc) {
+        response.json({
+          success: true,
+          content: doc,
+        });
+      } else {
+        response.json({
+          success: false,
+        });
+      }
+    })
+    .catch((error) => {
+      response.json(error);
+    });
+}
+exports.addEarTrainingHistory=async(request, response)=>{
+  
+  new EarTrainingHistory(
+    request.body
+ )
+ .save()
+ .then((doc) => {
+   if (doc) {
+     response.json({
+       success: true,
+       content: doc,
+     });
+   } else {
+     response.json({
+       success: false,
+     });
+   }
+ })
+ .catch((error) => {
+   response.json(error);
+ });
+}
+exports.getEarTrainingHistoryByUser=async(request, response)=>{
+  EarTrainingHistory.find({user:request.params.userId}).populate("earTraining")
+    .then((doc) => {
+      if (doc) {
+        response.json({
+          success: true,
+          content: doc,
+        });
+      } else {
+        response.json({
+          success: false,
+        });
+      }
+    })
+    .catch((error) => {
+      response.json(error);
+    });
+}
 
 exports.scrapeTabs=async(request, response)=>{
 //trim the name and make it lowercase
@@ -134,7 +229,7 @@ let name=request.body.name.trim().toLowerCase()
   const INPUT_SELECTOR="body > div > header > div > div.gtd-header__right > form"
   if (request.body !== undefined) {
     (() => {
-      puppeteer.launch({ headless: false })
+      puppeteer.launch({ headless: true })
       .then(async (browser) => {
 
         let page = await browser.newPage()
@@ -146,7 +241,8 @@ let name=request.body.name.trim().toLowerCase()
        // await  page.waitForNavigation()
 
               try{
-                await page.waitForSelector('.gt-link--primary')
+
+                await page.waitForSelector('.gt-link--primary',{timeout:3000})
                 const selectors = (await page.$$('.gt-link--primary')) || "";
                
                   await selectors[0].click()                  

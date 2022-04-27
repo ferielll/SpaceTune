@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const EarTrainingSchema = new mongoose.Schema(
     {
     name:String,
-    scale:String,
-    chords:[String],
-    perfectPitch:[String],
+    scale:Number,
+    chords:Number,
+    perfectPitch:Number,
     level:String
     },
     {timestamps:true},{versionKey:false}
