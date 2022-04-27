@@ -13,7 +13,7 @@ exports.createOrder=async(request, response)=>{
     new Order({
         _id: new mongoose.Types.ObjectId(),
         userID: request.body.order.userID,
-        itemOrders: request.body.order.items,
+        orderItems: request.body.order.items,
         totalMoney: request.body.order.total,
       
        
@@ -47,7 +47,7 @@ exports.showAllOrders = function (req, res, next) {
   //   res.json(orders);
   // });
 
-  Order.find({}).populate("userID").populate("itemOrders").exec((err, orders) => {
+  Order.find({}).populate("userID").populate("orderItems").exec((err, orders) => {
     if (err) {
       next(err);
     }
