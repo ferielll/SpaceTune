@@ -35,37 +35,17 @@ exports.createItem=async(request, response)=>{
     });
 };
 
-exports.updateItem =async (request,response)=>{
-    // try{
-    //     await Item.findOneAndUpdate({_id:request.params.itemId},request.body)
-    //     response.send({success:true})
-
-    // }catch(error){
-    //     response.json({success:false,message:error});
-
-    // }
-
-    try {
-        
-       
-          try {
-            const updatedItem = await Item.findByIdAndUpdate(
-                request.params.itemId,
-              {
-                $set: request.body,
-              },
-              { new: true }
-            );
-            console.log(updatedItem);
-            response.status(200).json(updatedItem);
-          } catch (err) {
-            response.status(500).json(err);
-          }
-         
-      } catch (err) {
-        response.status(500).json(err);
-      }
-}
+exports.updateItem = async (request, response) => {
+  try {
+    await Item.findByIdAndUpdate(
+      { _id: request.params.itemId },
+      request.body
+    );
+    response.send({ success: true });
+  } catch (error) {
+    response.json({ success: false, message: error });
+  }
+};
 
 exports.getAllItems =async (request,response)=>{
     try
@@ -124,12 +104,22 @@ exports.deleteItem=async (request,response)=>{
 
 exports.getItemsByUserId= async (request,response)=>{
     try{
-        let item=await Item.findOne({user:request.params.userId})
+        let item=await Item.find({user:request.params.userId})
         response.send(item)
     }catch(error){
         response.json({success:false,message:error});
 
     }
+}
+
+exports.getItemById= async (request,response)=>{
+  try{
+      let item=await Item.findById(request.params.Id)
+      response.send(item)
+  }catch(error){
+      response.json({success:false,message:error});
+
+  }
 }
 
 
@@ -147,9 +137,9 @@ exports.scrapeItems=async(request, res)=>{
   $('#main > div > section > ul > li').each((_idx, el) => {
             const item = $(el)
             const title = item.find(' a > div > div > h3').text()
-            const price = item.find(' div > span > span.c-val').text()
+            const price = item.find(' div > span > span.c-val').attr('content')
             const url = item.find(' a').attr('href')
-            const image = item.find(' a > span > img').attr('src')
+            const image = item.find(' a > span > img').attr('data-src')
             items.push({title:title,price:price,url:url,image:image})
         });
           

@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const ConversationSchema = new mongoose.Schema({
-    channelName : String,
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    lastMessage : String,
-    type: {
-        type: String,
-        enum:["Channel","Private"]
+const ConversationSchema = new mongoose.Schema(
+  {
+    members: { type: Array },
+    lastMessage: {
+      type: String,
+      default: "start conversation",
     },
-},
-{timestamps:true},{versionKey:false})
-module.exports = mongoose.model('Conversation', ConversationSchema);
+  },
+  { timestamps: true },
+  { versionKey: false }
+);
+module.exports = mongoose.model("Conversation", ConversationSchema);
