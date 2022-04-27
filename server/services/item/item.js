@@ -124,7 +124,7 @@ exports.deleteItem=async (request,response)=>{
 
 exports.getItemsByUserId= async (request,response)=>{
     try{
-        let item=await Item.findOne({user:request.params.userId})
+        let item=await Item.find({user:request.params.userId})
         response.send(item)
     }catch(error){
         response.json({success:false,message:error});
