@@ -84,3 +84,22 @@ exports.getCommentByUserId = async (request , response) => {
         response.status(500).json(error);
     }
 }
+
+//like comment
+exports.commentLike = async (req, res) => {
+    try {
+      //find comment to update its likes
+      const comment = await Comment.findById(req.params.id);
+      //check if comment likes include this user
+      if (!comment.likes.includes(req.body.id)) {
+        await comment.updateOne({ $push: { likes: req.body.id } });
+        res.status(200).send("Like comment");
+      } else {
+        await comment.updateOne({ $pull: { likes: req.body.id } });
+        res.status(200).send("Dislike comment");
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+  };

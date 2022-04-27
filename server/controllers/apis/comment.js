@@ -12,5 +12,6 @@ router.delete("/delete/:commentId" , CommentService.deleteComment);
 router.get("/get/:commentId" , CommentService.getCommentById);
 router.get("/getPost/:postId" , CommentService.getCommentByPostId);
 router.get("/findUser/:userId" , CommentService.getCommentByUserId);
+router.put("/like/:id" , CommentService.commentLike);
 
 module.exports = router;
