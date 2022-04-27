@@ -23,11 +23,16 @@ router.get(
   "/findOne/:formationId",
   FormationService.getFormationsByFormationId
 );
-router.put("/subscribe/:formationId", FormationService.subscribeUsers);
+router.put(
+  "/subscribe/:formationId/:receiverId",
+  FormationService.subscribeUsers
+);
 router.put("/addOnlineLesson/:formationId", FormationService.addOnlineLessons);
 
 //fetch lessons only for selected training
-router.get("/getAllOnlineLessons/:teacherId", FormationService.getAllOnlineLessons);
-
+router.get(
+  "/getAllOnlineLessons/:teacherId",
+  FormationService.getAllOnlineLessons
+);
 
 module.exports = router;

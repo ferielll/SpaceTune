@@ -6,6 +6,7 @@ const User = require("../../models/User");
 exports.createConversation = async (req, res) => {
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
+    lastMessage: "Start conversation",
   });
 
   try {

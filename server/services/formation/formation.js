@@ -1,5 +1,6 @@
 "use strict";
 const { forEach } = require("lodash");
+const Conversation = require("../../models/Conversation");
 const Formation = require("../../models/Formation");
 //create training
 
@@ -22,7 +23,7 @@ exports.createFormation = async (req, res) => {
     price,
     type,
     onlineLessons,
-    image: [{ imageURL: req.file.path, imageName: req.file.filename }],
+    image: [{ imageURL: req.file.path }],
   })
     .save()
     .then((doc) => {
@@ -136,24 +137,13 @@ exports.subscribeUsers = async (req, res) => {
         },
       }
     );
+    const newConversation = new Conversation({
+      members: [req.body._id, req.params.receiverId],
+    });
+    await newConversation.save();
     res.send({ success: true });
   } catch (error) {
     res.status(404).json({ success: false, message: error.message });
-  }
-};
-
-
-//new conv
-exports.createConversation = async (req, res) => {
-  const newConversation = new Conversation({
-    members: [req.body.senderId, req.body.receiverId],
-  });
-
-  try {
-    const savedConversation = await newConversation.save();
-    res.status(200).json(savedConversation);
-  } catch (err) {
-    res.status(500).json(err);
   }
 };
 

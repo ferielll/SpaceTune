@@ -9,8 +9,8 @@ const verifyToken = require("../../middleware/authentification");
 
 let router = express.Router();
 //survey
-router.post("/create", verifyToken, SurveyService.store);
-router.get("/listSurveys", verifyToken, SurveyService.FindQuiz);
+router.post("/create/:formationId", verifyToken, SurveyService.store);
+router.get("/listSurveys/:formationId", verifyToken, SurveyService.FindQuiz);
 router.get("/allSurveys", SurveyService.FindAllQuizs);
 router.get("/detailSurvey/:id", SurveyService.QuizDetails);
 router.put("/updateSurvey/:id", verifyToken, SurveyService.UpdateQuiz);

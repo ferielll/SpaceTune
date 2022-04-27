@@ -2,8 +2,10 @@ const mongoose = require("mongoose");
 
 const ConversationSchema = new mongoose.Schema(
   {
-    members: {
-      type: Array,
+    members: { type: Array },
+    lastMessage: {
+      type: String,
+      default: "start conversation",
     },
   },
   { timestamps: true },

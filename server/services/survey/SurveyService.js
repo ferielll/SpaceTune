@@ -1,5 +1,6 @@
 const Quiz = require("../../models/Quiz");
 const Question = require("../../models/Question");
+const Formation = require("../../models/Formation");
 
 //----- Add quiz -----
 exports.store = async (req, res) => {
@@ -13,7 +14,6 @@ exports.store = async (req, res) => {
       });
     });
 
-    // save the questions in Question|  *insertMany() inserts each element in the array into the collection*
     const questionsSaved = await Question.insertMany(quizQuestions);
 
     // get ids questions from questionsSaved
@@ -29,7 +29,17 @@ exports.store = async (req, res) => {
       quizQuestions: idQuestions,
     });
     let savedquiz = await quiz.save();
-    res.send(savedquiz);
+    let updateFormation = await Formation.findByIdAndUpdate(
+      {
+        _id: req.params.formationId,
+      },
+      {
+        $push: {
+          courses: savedquiz._id,
+        },
+      }
+    );
+    res.send(updateFormation);
   } catch (err) {
     console.log(err, "error");
     res.status(400).send(err);
@@ -39,10 +49,10 @@ exports.store = async (req, res) => {
 //----- Find List quizs of UserConnected (name & description) -----
 exports.FindQuiz = async (req, res) => {
   try {
-    const listquiz = await Quiz.find({ userId: req.user }).select(
-      "_id quizName quizDescription"
-    );
-    res.json(listquiz);
+    let listquiz = await Formation.findOne({
+      _id: req.params.formationId,
+    }).populate("courses");
+    res.send(listquiz);
   } catch (err) {
     res.json({ message: "empty list" });
   }
