@@ -23,7 +23,7 @@ exports.createFormation = async (req, res) => {
     price,
     type,
     onlineLessons,
-    image: [{ imageURL: req.file.path }],
+    image: [req.file.path],
   })
     .save()
     .then((doc) => {
