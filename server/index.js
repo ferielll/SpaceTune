@@ -8,6 +8,8 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require('path');
+
 dotenv.config();
 
 const app = require("express")();
@@ -54,9 +56,12 @@ module.exports = function() {
       useUnifiedTopology: true,
     });
     require("../configs/passport")(passport);
-
+    server.use(express.static(path.join(__dirname, 'build')));
+    server.get('/*', function (req, res) {
+      res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
     server.use("/uploads", express.static("uploads"));
-    server.set("views", server.get("viewDir"));
+    //server.set("views", server.get("viewDir"));
 
     // Set up routes
     routes.init(server);

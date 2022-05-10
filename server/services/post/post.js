@@ -20,7 +20,7 @@ exports.createPost=async(request, response)=>{
         content: request.body.content,
         user: request.body.user,
         title: request.body.title,
-        //Image: request.file.path
+        Image: request.file.path
     })
     .save()
     .then((doc) => {
